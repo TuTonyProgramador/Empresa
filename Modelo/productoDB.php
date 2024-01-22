@@ -39,6 +39,8 @@
         Devuelve: un array con los productos que coincidan con esa descripcion
         */
         public static function getByDescripcion(string $descripcion, Proveedor $proveedor): array {
+            $productos = [];
+
             // Establecer conexión con la base de datos
             include_once('../Conexion/obtenerConexion.php');
             $conexion = ObtenerConexion::obtenerConexion();
@@ -47,16 +49,18 @@
             $sql = "SELECT * FROM producto WHERE descripcion = :descripcion AND codigoProveedor = :codigoProveedor";
             $sentencia = $conexion->prepare($sql);
 
+            $codigoProveedor = $proveedor->getCodigoProveedor();
+
             // Ejecutar la consulta
-            $sentencia->setFetchMode(PDO::FETCH_CLASS, "Producto");
-            $sentencia->bindParam(':descripcion', $descripcion);
-            $sentencia->bindParam(":codigoProveedor", $proveedor->getCodigoProveedor()); 
+            $sentencia->setFetchMode(PDO::FETCH_ASSOC);
+            $sentencia->bindParam(":descripcion", $descripcion);
+            $sentencia->bindParam(":codigoProveedor", $codigoProveedor); 
             $sentencia->execute();
 
             while ($productoDB = $sentencia->fetch()){
                 $proveedor = ProveedorDB::getProveedor($productoDB['codigoProveedor']);
                 $producto = new Producto($productoDB['codigoProducto'],$productoDB['descripcion'],$productoDB['precio'],$productoDB['stock'], $proveedor);
-                $productos = $producto;
+                $productos[] = $producto;
             }
 
             return $productos;
@@ -68,6 +72,8 @@
         Devuelve: un array con los productos que tiene
         */
         public static function getProducto(Proveedor $proveedor): array {
+            $productos = [];
+
             // Establecer conexión con la base de datos
             include_once('../Conexion/obtenerConexion.php');
             $conexion = ObtenerConexion::obtenerConexion();
@@ -76,14 +82,14 @@
             $sentencia = $conexion->prepare($sql);
 
             // Ejecutar la consulta
-            $sentencia->setFetchMode(PDO::FETCH_CLASS, "Producto");
+            $sentencia->setFetchMode(PDO::FETCH_ASSOC);
             $sentencia->bindValue(':codigoProveedor', $proveedor->getCodigoProveedor());
             $sentencia->execute();
 
             while ($productoDB = $sentencia->fetch()){
                 $proveedor = ProveedorDB::getProveedor($productoDB['codigoProveedor']);
                 $producto = new Producto($productoDB['codigoProducto'],$productoDB['descripcion'],$productoDB['precio'],$productoDB['stock'], $proveedor);
-                $productos = $producto;
+                $productos[] = $producto;
             }
 
             return $productos;
@@ -149,6 +155,8 @@
         Devuelve: un objeto de la clase produto
         */
         public static function getByStock(int $stock, Proveedor $proveedor): array {
+            $productos = [];
+
             // Establecer conexión con la base de datos
             include_once('../Conexion/obtenerConexion.php');
             $conexion = ObtenerConexion::obtenerConexion();
@@ -157,16 +165,18 @@
             $sql = "SELECT * FROM producto WHERE stock <= :stock AND codigoProveedor = :codigoProveedor";
             $sentencia = $conexion->prepare($sql);
 
+            $codigoProveedor = $proveedor->getCodigoProveedor();
+
             // Ejecutar la consulta
-            $sentencia->setFetchMode(PDO::FETCH_CLASS, "Producto");
-            $sentencia->bindParam(':stock', $stock);
-            $sentencia->bindParam(":codigoProveedor", $proveedor->getCodigoProveedor()); 
+            $sentencia->setFetchMode(PDO::FETCH_ASSOC);
+            $sentencia->bindParam(":stock", $stock);
+            $sentencia->bindParam(":codigoProveedor", $codigoProveedor); 
             $sentencia->execute();
 
             while ($productoDB = $sentencia->fetch()){
                 $proveedor = ProveedorDB::getProveedor($productoDB['codigoProveedor']);
                 $producto = new Producto($productoDB['codigoProducto'],$productoDB['descripcion'],$productoDB['precio'],$productoDB['stock'], $proveedor);
-                $productos = $producto;
+                $productos[] = $producto;
             }
 
             return $productos;

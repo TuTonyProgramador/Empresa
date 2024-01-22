@@ -1,6 +1,7 @@
 <?php
     include_once 'producto.php';
     include_once 'proveedor.php';
+    include_once 'productoDB.php';
 
     class ProveedorDB {
         /*
@@ -20,11 +21,11 @@
             $sentencia = $conexion->prepare($sql);
 
             $result = $sentencia->execute([
-                'codigoProveedor' => $usuario->getCodigoProveedor(),
-                'pwd' => password_hash($usuario->getPwd(), PASSWORD_DEFAULT),
-                'nombre' => $usuario->getNombre(), 
-                'apellidos' => $usuario->getApellidos(), 
-                'email' => $usuario->getEmail()
+                'codigoProveedor' => $proveedor->getCodigoProveedor(),
+                'pwd' => password_hash($proveedor->getPwd(), PASSWORD_DEFAULT),
+                'nombre' => $proveedor->getNombre(), 
+                'apellidos' => $proveedor->getApellidos(), 
+                'email' => $proveedor->getEmail()
             ]);
 
             return $result;
@@ -45,10 +46,10 @@
             $sentencia = $conexion->prepare($sql);
             $sentencia->execute(['codigoProveedor' => $codigoProveedor]);
 
-            $proveedor = $sentencia->fetch();
+            $proveedor = $sentencia->fetch(PDO::FETCH_ASSOC);
 
             // Montar el proveedor
-            $proveedorDevolver = new Proveedor($proveedor->getCodigoProveedor(), $proveedor->getPwd(), $proveedor->getNombre(), $proveedor->getApellidos(), $proveedor->getEmail(), $proveedor->setProductos(null));
+            $proveedorDevolver = new Proveedor($proveedor['codigoProveedor'], $proveedor['pwd'], $proveedor['nombre'], $proveedor['apellidos'], $proveedor['email']);
 
             // Esto va al controlador
             /*if ($proveedor && password_verify($proveedor->getPwd(), $proveedor['pwd'])) {
@@ -74,8 +75,9 @@
             $sentencia = $conexion->prepare($sql);
 
             $sentencia->bindValue(":pwd", $proveedor->getPwd());
-            $sentencia->bindValue("nombre", $proveedor->getNombre());
-            $sentencia->bindValue("apellidos", $proveedor->getApellidos());
+            $sentencia->bindValue(":nombre", $proveedor->getNombre());
+            $sentencia->bindValue(":apellidos", $proveedor->getApellidos());
+            $sentencia->bindValue(":codigoProveedor", $proveedor->getCodigoProveedor());
 
             $result = $sentencia->execute();
 
@@ -88,9 +90,11 @@
         Devuelve: un objeto que es un proveedor
         */
         public static function getProveedorCompleto(string $codigoProveedor): Proveedor {
+            $productos = [];
+
             $proveedor = self::getProveedor($codigoProveedor);
             $productos = ProductoDB::getProducto($proveedor);
-            $proveedor->setProducto($productos);
+            $proveedor->setProductos($productos);
 
             return $proveedor;
         }
