@@ -96,6 +96,30 @@
         }
 
         /*
+        Funcion para devolver un producto por codigo
+        Recibe: el codigo del proveedor y el proveedor
+        Devuelve: un objeto de la clase produto
+        */
+        public static function getProductoByCodigo(string $codigoProducto, Proveedor $proveedor): Producto {
+            // Establecer conexión con la base de datos
+            include_once('../Conexion/obtenerConexion.php');
+            $conexion = ObtenerConexion::obtenerConexion();
+
+            $sql = "SELECT * FROM producto WHERE codigoProducto = :codigoProducto AND codigoProveedor = :codigoProveedor";
+            $sentencia = $conexion->prepare($sql);
+            $sentencia->setFetchMode(PDO::FETCH_ASSOC);
+            $sentencia->bindValue(":codigoProducto", $codigoProducto);
+            $sentencia->bindValue(":codigoProveedor", $proveedor->getCodigoProveedor());
+            $sentencia->execute();
+
+            $producto = $sentencia->fetch();
+
+            $producto = new Producto($producto['codigoProducto'], $producto['descripcion'], $producto['precio'], $producto['stock'], $proveedor);
+
+            return $producto;
+        }
+
+        /*
         Funcion para actualizar un producto
         Recibe: un objeto de la clase proveedor y un objeto de la clase producto
         Devuelve: false si no se ha actualizado el producto

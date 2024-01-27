@@ -1,0 +1,126 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+h2 {
+    color: white;
+    text-align: center;
+}
+
+.logo {
+    width: 400px;
+    margin: 0 auto;
+}
+
+.logo img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px; 
+}
+
+nav {
+    background-color: #3498db;
+    overflow: hidden;
+    text-align: center;
+}
+
+nav a {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 10px; 
+    text-decoration: none;
+    transition: background-color 0.3s;
+    margin-bottom: 30px; 
+}
+
+nav a:hover {
+    background-color: #2980b9;
+    color: black;
+}
+
+form {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: white;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+input[type="submit"] {
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    border: 2px solid #fff;
+}
+
+input[type="submit"]:hover {
+    background-color: #2980b9;
+    border: 2px solid #fff;
+}
+
+table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: 20px auto;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+
+}
+
+th {
+    background-color: #3498db;
+    color: white;
+}
+
+tr {
+    color: white;
+}
+
+tr:hover {
+    background-color: #3498db;
+    color: black;
+}
+
+select {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+    margin: 0 auto;  
+    display: block;  
+    margin-bottom: 15px;  
+}
+
+select option {
+    padding: 8px;
+    font-size: 14px;
+}
+
+p {
+    color: white;
+}

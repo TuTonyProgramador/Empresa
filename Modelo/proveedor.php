@@ -65,5 +65,15 @@
         public function setProductos(array $producto): void {
             $this->producto = $producto;
         }
+
+        // Metodo toString de la clase
+        public function __toString(): String {
+            return "Código Proveedor: " . $this->codigoProveedor . "<br>" .
+                "Contraseña: " . $this->pwd . "<br>" .
+                "Nombre: " . $this->nombre . "<br>" .
+                "Apellidos: " . $this->apellidos . "<br>" .
+                "Email: " . $this->email . "<br>" .
+                "Productos: " . implode(', ', $this->producto) . "<br>";
+        }        
     }
 ?>

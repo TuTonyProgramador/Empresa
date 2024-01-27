@@ -57,5 +57,14 @@
         public function setProveedor(Proveedor $proveedor): void {
             $this->proveedor = $proveedor;
         }
+
+        // Metodo toString de la clase
+        public function __toString(): string {
+            return "Código Producto: " . $this->codigoProducto . "<br>" .
+                "Descripción: " . $this->descripcion . "<br>" .
+                "Precio: " . $this->precio . "<br>" .
+                "Stock: " . $this->stock . "<br>" .
+                "Proveedor: " . $this->proveedor . "<br>";
+        }        
     }
 ?>

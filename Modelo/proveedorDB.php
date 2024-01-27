@@ -46,15 +46,11 @@
             $sentencia = $conexion->prepare($sql);
             $sentencia->execute(['codigoProveedor' => $codigoProveedor]);
 
-            $proveedor = $sentencia->fetch(PDO::FETCH_ASSOC);
+            $proveedor = $sentencia->fetch();
 
             // Montar el proveedor
             $proveedorDevolver = new Proveedor($proveedor['codigoProveedor'], $proveedor['pwd'], $proveedor['nombre'], $proveedor['apellidos'], $proveedor['email']);
-
-            // Esto va al controlador
-            /*if ($proveedor && password_verify($proveedor->getPwd(), $proveedor['pwd'])) {
-            }*/
-
+            
             return $proveedorDevolver;
         }
 
@@ -74,12 +70,12 @@
             $sql = "UPDATE proveedor SET pwd = :pwd, nombre = :nombre, apellidos = :apellidos WHERE codigoProveedor = :codigoProveedor";
             $sentencia = $conexion->prepare($sql);
 
-            $sentencia->bindValue(":pwd", $proveedor->getPwd());
-            $sentencia->bindValue(":nombre", $proveedor->getNombre());
-            $sentencia->bindValue(":apellidos", $proveedor->getApellidos());
-            $sentencia->bindValue(":codigoProveedor", $proveedor->getCodigoProveedor());
-
-            $result = $sentencia->execute();
+            $result = $sentencia->execute([
+                'codigoProveedor' => $proveedor->getCodigoProveedor(),
+                'pwd' => password_hash($proveedor->getPwd(), PASSWORD_DEFAULT),
+                'nombre' => $proveedor->getNombre(), 
+                'apellidos' => $proveedor->getApellidos()
+            ]);
 
             return $result;
         }
